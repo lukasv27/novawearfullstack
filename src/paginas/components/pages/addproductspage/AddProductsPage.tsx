@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import ProductForm from "../../ProductForm";
 import ProductTable from "../../ProductTable";
-import type { Product } from "@/service/ProductService";
-import { createProduct, getAllProducts, deleteProduct, updateProduct } from "@/service/ProductService";
-
+import type { Product } from "@/api/service/ProductService";
+import {
+  createProduct,
+  getAllProducts,
+  deleteProduct,
+  updateProduct,
+} from "@/api/service/ProductService";
 
 export default function AddProductPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -42,9 +46,12 @@ export default function AddProductPage() {
   return (
     <div className="p-10 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Panel de administrador</h1>
-      
+
       {/* Formulario */}
-      <ProductForm initialData={editingProduct ?? undefined} onSubmit={handleSubmit} />
+      <ProductForm
+        initialData={editingProduct ?? undefined}
+        onSubmit={handleSubmit}
+      />
 
       {/* Tabla */}
       <ProductTable

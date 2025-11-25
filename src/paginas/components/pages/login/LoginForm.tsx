@@ -9,16 +9,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import type { RegistroDTO } from "@/api/types";
-import { registro } from "@/api/service/AuthService";
+
+import { login } from "@/api/service/AuthService";
+import type { LoginDTO } from "@/api/types";
 import { toast } from "sonner";
 import { useState } from "react";
 
-const UserRegister = () => {
-  const form = useForm<RegistroDTO>({
+const LoginForm = () => {
+  const form = useForm({
     defaultValues: {
-      nombre: "",
-      apellido: "",
       email: "",
       password: "",
     },
@@ -26,12 +25,12 @@ const UserRegister = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: RegistroDTO) => {
+  const onSubmit = async (data: LoginDTO) => {
     setLoading(true);
     try {
-      const persona = await registro(data);
-      toast.success(`Usuario registrado: ${persona.email}`);
-      form.reset(); // opcional: limpia el formulario
+      const mensaje = await login(data); // tu backend devuelve "Login exitoso"
+      toast.success(mensaje);
+      // aquí podrías redirigir al dashboard o guardar token
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -50,38 +49,8 @@ const UserRegister = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md bg-white rounded-lg shadow-md p-6 space-y-4 
              transition-transform transition-shadow duration-300 ease-in-out 
-             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp" // animacion para que se vea mas pro y se mueva la card de registro
+             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp" // animacion para que se vea mas pro y se mueva la card de login
         >
-          {/* NOMBRE */}
-          <FormField
-            control={form.control}
-            name="nombre"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nombres</FormLabel>
-                <FormControl>
-                  <Input placeholder="Tus nombres" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* APELLIDOS */}
-          <FormField
-            control={form.control}
-            name="apellido"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Apellidos</FormLabel>
-                <FormControl>
-                  <Input placeholder="Tus Apellidos" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* EMAIL */}
           <FormField
             control={form.control}
             name="email"
@@ -89,14 +58,13 @@ const UserRegister = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="email@ejemplo.com" {...field} />
+                  <Input placeholder="Ingresa tu email" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* CONTRASEÑA */}
           <FormField
             control={form.control}
             name="password"
@@ -104,20 +72,23 @@ const UserRegister = () => {
               <FormItem>
                 <FormLabel>Contraseña</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Tu contraseña"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          {/* BOTÓN */}
           <Button
             type="submit"
             className="w-full bg-red-600 hover:bg-blue-700 text-white"
             disabled={loading}
           >
-            {loading ? "Registrando..." : "Registrarme"}
+            {loading ? "Ingresando..." : "Ingresar"}
           </Button>
         </form>
       </Form>
@@ -125,4 +96,4 @@ const UserRegister = () => {
   );
 };
 
-export default UserRegister;
+export default LoginForm;

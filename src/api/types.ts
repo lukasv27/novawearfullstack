@@ -17,4 +17,7 @@ export interface Persona {
   nombre: string;
   apellido: string;
   email: string;
+  rol: Rol;
 }
+
+export type Rol = "ADMINISTRADOR" | "VENDEDOR" | "CLIENTE";

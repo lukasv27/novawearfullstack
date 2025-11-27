@@ -55,7 +55,12 @@
 
 .add-cart-button:hover{
     cursor: pointer;
-    background-color: blue;
+    background-color: rgb(151, 98, 168);
     color: white;
 }
 
+.add-cart-button2:hover{
+    cursor: pointer;
+    background-color: rgb(190, 190, 207);
+    color: white;
+}

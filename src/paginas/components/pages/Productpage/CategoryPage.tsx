@@ -66,7 +66,7 @@ export default function CategoryPage() {
 
   return (
     <div className="p-10">
-      <Navbar />
+      
       <h1 className="text-3xl font-bold mb-6">{categoryName}</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

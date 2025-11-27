@@ -1,24 +1,28 @@
 import api from "../axios";
 import type { LoginDTO, Persona } from "../types";
 
+// Login de usuario
 export async function login(dto: LoginDTO): Promise<Persona> {
   try {
-    // Ajusta el tipo según lo que devuelve tu backend
-    const res = await api.post<Persona & { accessToken: string }>("/autentificacion/login", dto);
+    // Suponemos que el backend devuelve { token: string, ...usuario }
+    const res = await api.post<Persona & { token: string }>("/autentificacion/login", dto);
 
-    if (res.data.accessToken) {
-      localStorage.setItem("jwt", res.data.accessToken);
-      console.log("Token guardado:", res.data.accessToken);
+    // Guardar token en localStorage
+    if (res.data.token) {
+      localStorage.setItem("jwt", res.data.token);
+      console.log("Token guardado:", res.data.token);
     } else {
       console.warn("No se recibió token en el login");
     }
 
+    // Retornar datos del usuario
     return res.data;
   } catch (err) {
     throw parseError(err);
   }
 }
 
+// Manejo de errores
 function parseError(err: unknown): Error {
   const anyErr = err as {
     response?: { data: unknown; status: number };

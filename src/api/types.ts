@@ -17,4 +17,5 @@ export interface Persona {
   nombre: string;
   apellido: string;
   email: string;
+  rol: string;
 }

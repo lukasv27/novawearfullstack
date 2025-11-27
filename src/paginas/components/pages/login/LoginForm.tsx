@@ -1,99 +1,61 @@
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-
-import { login } from "@/api/service/AuthService";
-import type { LoginDTO } from "@/api/types";
-import { toast } from "sonner";
+// src/components/LoginForm.tsx
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/AuthContext";
 
-const LoginForm = () => {
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
+export default function LoginForm() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const onSubmit = async (data: LoginDTO) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setLoading(true);
+
     try {
-      const mensaje = await login(data); // tu backend devuelve "Login exitoso"
-      toast.success(mensaje);
-      // aquí podrías redirigir al dashboard o guardar token
-    } catch (error) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        console.error("Error desconocido:", error);
+      const user = await login(email, password);
+
+      // Verificar rol ADMIN
+      if (user.rol !== "ADMIN") {
+        alert("No tienes permisos de administrador");
+        return;
       }
+
+      alert(`Bienvenido ${user.nombre}`);
+      navigate("/admin/products");
+    } catch (err: any) {
+      console.error(err);
+      alert(err.message || "Error en login");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-200">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="w-full max-w-md bg-white rounded-lg shadow-md p-6 space-y-4 
-             transition-transform transition-shadow duration-300 ease-in-out 
-             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp" // animacion para que se vea mas pro y se mueva la card de login
-        >
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="Ingresa tu email" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Contraseña</FormLabel>
-                <FormControl>
-                  <Input
-                    type="password"
-                    placeholder="Tu contraseña"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <Button
-            type="submit"
-            className="w-full bg-red-600 hover:bg-blue-700 text-white"
-            disabled={loading}
-          >
-            {loading ? "Ingresando..." : "Ingresar"}
-          </Button>
-        </form>
-      </Form>
-    </div>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6 border rounded shadow max-w-sm mx-auto mt-20">
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Contraseña"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        required
+      />
+      <button
+        type="submit"
+        disabled={loading}
+        className="bg-blue-600 text-white p-2 rounded"
+      >
+        {loading ? "Ingresando..." : "Login"}
+      </button>
+    </form>
   );
-};
-
-export default LoginForm;
+}

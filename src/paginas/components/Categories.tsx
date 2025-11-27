@@ -11,7 +11,7 @@ const categories = [
 
 export default function Categories() {
   return (
-    <div className="p-10">
+    <div className="">
       <h1 className="text-4xl font-bold mb-6">Categorías</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {categories.map(cat => {

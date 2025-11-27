@@ -10,7 +10,7 @@ import FeaturedProducts from '../FeaturedProducts'
 const HomeLayout = () => {
   return (
     <>
-      <Navbar/>
+      
       <Outlet/>
       <Hero/>
       <Categories/>

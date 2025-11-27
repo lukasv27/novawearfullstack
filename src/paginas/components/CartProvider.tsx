@@ -31,6 +31,19 @@ export const CartProvider = ({ children }: Props) => {
       setCart((items) => [...items]);
     }
   };
+  // esto permite que el carrito no se borre al reinicar la pagina
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  
 
   // Eliminar
   const removeFromCart = (productId: number, size: string) => {

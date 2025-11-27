@@ -1,4 +1,5 @@
 import AdminLayout from "@/paginas/components/layouts/AdminLayout";
+import PublicLayout from "@/paginas/components/pages/PublicLayout"; // Asegúrate de tener este layout con Navbar
 import LoginForm from "@/paginas/components/pages/login/LoginForm";
 import AdminProductsPage from "@/paginas/components/pages/addproductspage/AddProductsPage";
 
@@ -11,18 +12,23 @@ import UserRegister from "@/paginas/components/pages/userRegister/UserSignup";
 import { createBrowserRouter } from "react-router";
 
 import ShoppingCartPage from "@/paginas/components/pages/shoppingcart/ShoppingCartPage";
+import PurchareHistory from "@/paginas/components/pages/purcharehistorypage/PurchareHistory";
+import AuthLayout from "@/paginas/components/layouts/AuthLayout";
 
 export const router = createBrowserRouter([
-  { path: "/home", element: <HomePage /> },
   {
-    path: "/login",
-    element: <LoginPage />,
-    children: [{ index: true, element: <LoginForm /> }],
+    path: "/",
+    element: <PublicLayout />,  // Layout público con Navbar
+    children: [
+      { index: true, element: <HomePage /> },  // Ruta "/"
+      { path: "home", element: <HomePage /> },
+      { path: "login", element: <LoginPage />, children: [{ index: true, element: <LoginForm /> }] },
+      { path: "registro", element: <UserRegister /> },
+      { path: "productos", element: <ProductsPage /> },
+      { path: "category/:categoryName", element: <CategoryPage /> },
+      { path: "shoppingcart", element: <ShoppingCartPage /> },
+    ],
   },
-  { path: "/registro", element: <UserRegister /> },
-  { path: "/productos", element: <ProductsPage /> },
-  { path: "/category/:categoryName", element: <CategoryPage /> },
-  { path: "/shoppingcart", element: <ShoppingCartPage /> },
   {
     path: "/administrador",
     element: <AdminLayout />,
@@ -31,4 +37,17 @@ export const router = createBrowserRouter([
       { path: "productos", element: <AdminProductsPage /> },
     ],
   },
+  {
+    path: "/historial de compra",
+    element: <PurchareHistory/>
+  },
+  {
+    path: "/auth", // ruta padre para login/registro sin Navbar
+    element: <AuthLayout/>,
+    children: [
+      { path: "login", element: <LoginPage /> },
+      { path: "registro", element: <UserRegister /> },
+    ],
+  },
 ]);
+  

@@ -10,12 +10,20 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import type { RegistroDTO } from "@/api/types";
-import { registro } from "@/api/service/AuthService";
+import { login } from "@/api/service/AuthService";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+
 
 const UserRegister = () => {
+  const navigate = useNavigate(); // TypeScript infiere correctamente
+
+
   const form = useForm<RegistroDTO>({
+    
+
     defaultValues: {
       nombre: "",
       apellido: "",
@@ -29,9 +37,10 @@ const UserRegister = () => {
   const onSubmit = async (data: RegistroDTO) => {
     setLoading(true);
     try {
-      const persona = await registro(data);
+      const persona = await login(data);
       toast.success(`Usuario registrado: ${persona.email}`);
-      form.reset(); // opcional: limpia el formulario
+      form.reset();
+      navigate("/login") // opcional: limpia el formulario
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -118,6 +127,9 @@ const UserRegister = () => {
             disabled={loading}
           >
             {loading ? "Registrando..." : "Registrarme"}
+          
+              
+
           </Button>
         </form>
       </Form>

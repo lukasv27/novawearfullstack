@@ -8,47 +8,45 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <nav className="navbar-client">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="text-2xl font-bold bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-transparent">
-              VIBE STORE
+            <div className="text-2xl font-bold bg-gradient-to-r from-vibrant-pink via-vibrant-purple to-vibrant-orange bg-clip-text text-black">
+              NOVA WEAR STORE
             </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-foreground hover:text-primary transition-colors">
+          <div className="flex items-center gap-6">
+
+            <Button variant="link" className="border-0 focus-visible:ring-0" onClick={() => navigate("/home")}>
               Inicio
-            </a>
-            <a href="#productos" className="text-foreground hover:text-primary transition-colors">
+            </Button>
+
+            <Button variant="link" className="border-0 focus-visible:ring-0" onClick={() => navigate("/productos")}>
               Productos
-            </a>
-            <a href="#categorias" className="text-foreground hover:text-primary transition-colors">
-              Categorías
-            </a>
-            <a href="#contacto" className="text-foreground hover:text-primary transition-colors">
-              Contacto
-            </a>
+            </Button>
+
+            <Button variant="link" className="border-0 focus-visible:ring-0" onClick={() => navigate("/historial de compra")}>
+              Historial de compra
+            </Button>
+
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="hidden md:flex">
-              <Search className="h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
+          <div className="  flex items-center gap-4  ">
+            <Button variant="ghost" size="icon" className="icon_navbar" onClick={() => navigate("/login")}>
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" onClick={() => { navigate("/shoppingcart"); }}>
+            <Button className="icon_navbar"variant="ghost" size="icon" onClick={() => { navigate("/shoppingcart"); }}>
               <ShoppingBag className="h-5 w-5"/>
             </Button>
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden"
+              className="icon_navbar"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <Menu className="h-5 w-5" />

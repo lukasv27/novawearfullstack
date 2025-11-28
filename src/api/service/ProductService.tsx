@@ -1,6 +1,7 @@
 import axios from "axios";
+import api from "../axios";
 
-const API_URL = "http://localhost:8080/products";
+const API_URL = "http://localhost:8080/admin/products";
 
 export interface Product {
   id: number;
@@ -13,29 +14,29 @@ export interface Product {
 
 // Obtener todos
 export async function getAllProducts() {
-  return await axios.get<Product[]>(API_URL);
+  return await api.get<Product[]>(API_URL);
 }
 
 // Obtener por ID
 export async function getProductById(id: number) {
-  return await axios.get<Product>(`${API_URL}/${id}`);
+  return await api.get<Product>(`${API_URL}/${id}`);
 }
 
 // Crear
 export async function createProduct(formData: FormData) {
-  return await axios.post(API_URL, formData, {
+  return await api.post(API_URL, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 }
 
 // Actualizar
 export async function updateProduct(id: number, formData: FormData) {
-  return await axios.put(`${API_URL}/${id}`, formData, {
+  return await api.put(`${API_URL}/${id}`, formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
 }
 
 // Eliminar
 export async function deleteProduct(id: number) {
-  return await axios.delete(`${API_URL}/${id}`);
+  return await api.delete(`${API_URL}/${id}`);
 }

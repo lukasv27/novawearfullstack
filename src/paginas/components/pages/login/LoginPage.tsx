@@ -112,7 +112,7 @@ const LoginPage = () => {
           {/* Botón */}
           <Button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full drop-down drop-down-select text-black"
             disabled={loading}
           >
             {loading ? "Iniciando..." : "Ingresar"}

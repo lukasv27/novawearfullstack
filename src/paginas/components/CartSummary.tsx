@@ -1,8 +1,22 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "./CartProvider";
-//resumen del pedido
+import ThankYouMessage from "./ThankYouMessage";
+
 export default function CartSummary() {
   const { total } = useCart();
+
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handlePurchase = () => {
+    // Aquí luego conectarás el backend para guardar la compra
+    console.log("Compra realizada!");
+    
+    setShowMessage(true);
+
+    // Si quieres que se cierre solo:
+    setTimeout(() => setShowMessage(false), 3000);
+  };
 
   return (
     <div className="lg:col-span-1">
@@ -26,11 +40,17 @@ export default function CartSummary() {
           <span>${total.toFixed(2)}</span>
         </div>
 
-        <Button className="w-full mb-3 add-cart-button">
+        {/* BOTÓN QUE DISPARA LA ANIMACIÓN */}
+        <Button className="w-full mb-3 add-cart-button" onClick={handlePurchase}>
           Proceder al pago
         </Button>
 
-        <Button
+        {/* MENSAJE ANIMADO */}
+        {showMessage && (
+          <ThankYouMessage onClose={() => setShowMessage(false)} />
+        )}
+
+        <Button       
           variant="outline"
           className="w-full add-cart-button"
           onClick={() => (window.location.href = "/productos")}

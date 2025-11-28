@@ -64,3 +64,11 @@
     background-color: rgb(190, 190, 207);
     color: white;
 }
+.drop-down{
+    background-color: rgb(221, 207, 221);
+}
+
+.drop-down-select:hover{
+    cursor: pointer;
+    background-color: rgb(151, 98, 168);
+}

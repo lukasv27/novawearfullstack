@@ -27,6 +27,7 @@ export const router = createBrowserRouter([
       { path: "productos", element: <ProductsPage /> },
       { path: "category/:categoryName", element: <CategoryPage /> },
       { path: "shoppingcart", element: <ShoppingCartPage /> },
+      { path: "/historial de compra",element: <PurchareHistory/>},
     ],
   },
   {
@@ -37,10 +38,7 @@ export const router = createBrowserRouter([
       { path: "productos", element: <AdminProductsPage /> },
     ],
   },
-  {
-    path: "/historial de compra",
-    element: <PurchareHistory/>
-  },
+  
   {
     path: "/auth", // ruta padre para login/registro sin Navbar
     element: <AuthLayout/>,

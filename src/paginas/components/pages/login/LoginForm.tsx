@@ -9,28 +9,42 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-import { login } from "@/api/service/AuthService";
+import { login as loginService } from "@/api/service/AuthService";
 import type { LoginDTO } from "@/api/types";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/hooks/useAuth";
 
 const LoginForm = () => {
-  const form = useForm({
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+  const form = useForm<LoginDTO>({
+    defaultValues: { email: "", password: "" },
   });
 
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { login } = useAuth(); //  hook
 
   const onSubmit = async (data: LoginDTO) => {
     setLoading(true);
     try {
-      const mensaje = await login(data); // tu backend devuelve "Login exitoso"
-      toast.success(mensaje);
-      // aquí podrías redirigir al dashboard o guardar token
+      const result = await loginService(data);
+      // result debe ser { token, email, rol }
+
+      // Guardar en useAuth
+      login(result.token, result.rol, result.email);
+
+      toast.success(`Bienvenido ${result.email} como ${result.rol}`);
+
+      // Redirigir segun rol
+      // roles admin y vendedor son provisorios por ahora, luego pongo las rutas reales
+      if (result.rol === "CLIENTE") {
+        navigate("/home");
+      } else if (result.rol === "ADMINISTRADOR") {
+        navigate("/administrador");
+      } else if (result.rol === "VENDEDOR") {
+        navigate("/ventas");
+      }
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -49,7 +63,7 @@ const LoginForm = () => {
           onSubmit={form.handleSubmit(onSubmit)}
           className="w-full max-w-md bg-white rounded-lg shadow-md p-6 space-y-4 
              transition-transform transition-shadow duration-300 ease-in-out 
-             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp" // animacion para que se vea mas pro y se mueva la card de login
+             hover:shadow-lg hover:scale-[1.01] animate-fadeSlideUp"
         >
           <FormField
             control={form.control}

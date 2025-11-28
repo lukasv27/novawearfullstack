@@ -12,9 +12,15 @@ export async function registro(dto: RegistroDTO): Promise<Persona> {
 }
 
 // Login de usuario
-export async function login(dto: LoginDTO): Promise<string> {
+export interface LoginResponse {
+  token: string;
+  email: string;
+  rol: "ADMINISTRADOR" | "VENDEDOR" | "CLIENTE";
+}
+
+export async function login(dto: LoginDTO): Promise<LoginResponse> {
   try {
-    const res = await api.post<string>("/autentificacion/login", dto);
+    const res = await api.post<LoginResponse>("/autentificacion/login", dto);
     return res.data;
   } catch (err) {
     throw parseError(err);

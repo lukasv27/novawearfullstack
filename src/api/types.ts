@@ -10,6 +10,7 @@ export interface RegistroDTO {
 export interface LoginDTO {
   email: string;
   password: string;
+  rol: "CLIENTE" | "VENDEDOR" | "ADMINISTRADOR";
 }
 
 export interface Persona {
